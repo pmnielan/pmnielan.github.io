@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>豚豚剧网页版-短剧在线观看入口_网页版短剧追剧与剧集导航</title>
+<meta name="description" content="豚豚剧网页版是面向短剧爱好者的在线追剧入口，提供剧集分类浏览、热门短剧推荐、搜索筛选与观看指引，帮助你在浏览器中快速找到想看的短剧内容。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a1f3d'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23ffb648' stroke-width='4'/%3E%3Cpath d='M27 23l15 9-15 9z' fill='%23ffb648'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1a1f3d;
+  --ink-soft:#3c4265;
+  --muted:#6b7190;
+  --line:#e3e5ef;
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --accent:#ff7a3d;
+  --accent-deep:#e75f22;
+  --gold:#ffb648;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(26,31,61,.08);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",system-ui,-apple-system,sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+img,svg{display:block;max-width:100%;}
+.wrap{width:min(1140px,92vw);margin:0 auto;}
+
+/* header */
+header.site{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;gap:20px;padding:12px 0;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:.3px;white-space:nowrap;}
+.logo .mark{width:38px;height:38px;flex:none;border-radius:11px;background:var(--ink);display:grid;place-items:center;}
+.logo .mark svg{width:22px;height:22px;}
+nav.main{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+nav.main a{
+  font-size:14.5px;color:var(--ink-soft);padding:7px 12px;border-radius:9px;
+  transition:.2s;
+}
+nav.main a:hover{background:#f0f1f8;color:var(--ink);}
+.nav-cta{
+  font-size:14px;font-weight:700;padding:9px 18px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#fff;white-space:nowrap;box-shadow:0 6px 16px rgba(255,122,61,.28);
+}
+.nav-cta:hover{filter:brightness(1.05);}
+.menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:9px;padding:7px 10px;cursor:pointer;}
+.menu-btn span{display:block;width:20px;height:2px;background:var(--ink);margin:4px 0;border-radius:2px;}
+
+/* hero */
+.hero{
+  background:
+    radial-gradient(900px 420px at 88% -10%, rgba(255,182,72,.22), transparent 70%),
+    radial-gradient(700px 380px at 8% 0%, rgba(255,122,61,.14), transparent 65%),
+    linear-gradient(180deg,#ffffff,#f6f7fb);
+  padding:54px 0 44px;
+  border-bottom:1px solid var(--line);
+}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;color:var(--accent-deep);
+  background:#fff2ea;border:1px solid #ffd9c4;
+  padding:5px 13px;border-radius:999px;margin-bottom:18px;
+}
+h1{
+  font-size:clamp(28px,4.2vw,44px);
+  line-height:1.25;margin:0 0 16px;letter-spacing:-.5px;font-weight:900;
+}
+h1 .hl{color:var(--accent-deep);}
+.lede{font-size:16.5px;color:var(--ink-soft);margin:0 0 26px;max-width:38em;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:700;padding:12px 24px;border-radius:12px;transition:.2s;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#fff;box-shadow:0 10px 24px rgba(255,122,61,.3);}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:#c9cde0;}
+.hero-facts{display:flex;gap:28px;flex-wrap:wrap;}
+.fact b{display:block;font-size:22px;font-weight:900;line-height:1.2;color:var(--ink);}
+.fact span{font-size:13px;color:var(--muted);}
+
+/* hero visual */
+.hero-art{
+  background:linear-gradient(160deg,#1a1f3d,#2c3466 60%,#3a3f7a);
+  border-radius:24px;padding:22px;color:#fff;box-shadow:0 24px 50px rgba(26,31,61,.28);
+  position:relative;overflow:hidden;
+}
+.hero-art::after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,182,72,.35),transparent 70%);
+  right:-60px;top:-60px;
+}
+.art-title{font-size:13px;letter-spacing:2px;color:#a9b0d8;margin-bottom:14px;font-weight:700;}
+.art-list{display:grid;gap:10px;position:relative;z-index:1;}
+.art-item{
+  display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;
+}
+.art-thumb{
+  width:44px;height:58px;border-radius:8px;flex:none;
+  background:linear-gradient(150deg,var(--gold),var(--accent));
+  display:grid;place-items:center;color:#1a1f3d;font-weight:900;font-size:15px;
+}
+.art-item:nth-child(2) .art-thumb{background:linear-gradient(150deg,#8f9bff,#5b64d8);color:#fff;}
+.art-item:nth-child(3) .art-thumb{background:linear-gradient(150deg,#6fd6b8,#2f9e83);color:#fff;}
+.art-item:nth-child(4) .art-thumb{background:linear-gradient(150deg,#ff9fb2,#e75f7c);color:#fff;}
+.art-item h4{margin:0;font-size:14px;font-weight:700;}
+.art-item p{margin:1px 0 0;font-size:12px;color:#a9b0d8;}
+
+/* sections */
+section{padding:56px 0;}
+.sec-head{max-width:44em;margin-bottom:30px;}
+.sec-tag{font-size:13px;font-weight:800;color:var(--accent-deep);letter-spacing:1.5px;text-transform:uppercase;}
+h2{font-size:clamp(21px,2.6vw,29px);margin:8px 0 10px;letter-spacing:-.3px;font-weight:900;}
+.sec-head p{margin:0;color:var(--muted);font-size:15px;}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px;box-shadow:var(--shadow);transition:.22s;
+}
+.card:hover{transform:translateY(-3px);border-color:#d5d9ea;}
+.card .ico{
+  width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;
+  background:#fff2ea;color:var(--accent-deep);
+}
+.card .ico svg{width:22px;height:22px;}
+.card h3{margin:0 0 8px;font-size:17px;font-weight:800;}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+.card ul{margin:12px 0 0;padding-left:18px;font-size:14px;color:var(--ink-soft);}
+.card li{margin-bottom:5px;}
+
+/* browser + filter */
+.browse{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:26px;}
+.search-box{
+  flex:1 1 280px;display:flex;align-items:center;gap:9px;
+  border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#fafbff;
+}
+.search-box svg{width:18px;height:18px;flex:none;color:var(--muted);}
+.search-box input{
+  border:none;outline:none;background:none;font-size:15px;width:100%;color:var(--ink);
+  font-family:inherit;
+}
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{
+  font-size:13.5px;padding:8px 15px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-family:inherit;
+  transition:.18s;font-weight:600;
+}
+.chip:hover{border-color:#c9cde0;}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.show-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.show{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  transition:.2s;display:flex;flex-direction:column;
+}
+.show:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+.poster{
+  aspect-ratio:3/4;position:relative;display:grid;place-items:center;
+  font-size:34px;font-weight:900;color:rgba(255,255,255,.9);
+}
+.poster .badge{
+  position:absolute;top:9px;left:9px;font-size:11px;font-weight:800;color:#1a1f3d;
+  background:var(--gold);padding:2px 9px;border-radius:999px;letter-spacing:.5px;
+}
+.p1{background:linear-gradient(150deg,#ff9d5c,#e75f22);}
+.p2{background:linear-gradient(150deg,#8f9bff,#4b54c9);}
+.p3{background:linear-gradient(150deg,#6fd6b8,#219b7d);}
+.p4{background:linear-gradient(150deg,#ff9fb2,#d94a68);}
+.p5{background:linear-gradient(150deg,#ffd166,#e0a12a);}
+.p6{background:linear-gradient(150deg,#a3b8ff,#5f6fd6);}
+.p7{background:linear-gradient(150deg,#7fe0d3,#2a9d96);}
+.p8{background:linear-gradient(150deg,#f5a3c7,#b8467c);}
+.show-body{padding:12px 13px 14px;display:flex;flex-direction:column;gap:3px;flex:1;}
+.show-body h3{margin:0;font-size:14.5px;font-weight:800;line-height:1.4;}
+.show-body p{margin:0;font-size:12.5px;color:var(--muted);}
+.show-body .meta{margin-top:auto;font-size:12px;color:var(--accent-deep);font-weight:700;padding-top:6px;}
+.empty{
+  grid-column:1/-1;text-align:center;color:var(--muted);font-size:14.5px;
+  padding:38px 10px;border:1px dashed var(--line);border-radius:14px;background:#fafbff;
+}
+
+/* guide */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:16px;}
+.steps li{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+  display:flex;gap:16px;box-shadow:var(--shadow);
+}
+.steps .num{
+  flex:none;width:32px;height:32px;border-radius:9px;background:var(--ink);color:var(--gold);
+  display:grid;place-items:center;font-weight:900;font-size:14px;
+}
+.steps h3{margin:0 0 4px;font-size:15.5px;font-weight:800;}
+.steps p{margin:0;font-size:14px;color:var(--ink-soft);}
+.note{
+  background:#fff8f2;border:1px solid #ffdcc6;border-radius:14px;padding:20px 22px;margin-top:18px;
+}
+.note h3{margin:0 0 8px;font-size:15px;font-weight:800;color:var(--accent-deep);}
+.note p{margin:0;font-size:14px;color:var(--ink-soft);}
+.prose p{font-size:15px;color:var(--ink-soft);margin:0 0 14px;}
+.prose strong{color:var(--ink);}
+
+/* faq */
+.faq{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.faq-list{display:grid;gap:12px;max-width:860px;}
+details{
+  background:#fafbff;border:1px solid var(--line);border-radius:12px;padding:0 20px;
+  transition:.2s;
+}
+details[open]{background:#fff;box-shadow:var(--shadow);}
+summary{
+  cursor:pointer;list-style:none;font-weight:800;font-size:15px;padding:16px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-size:20px;color:var(--accent-deep);font-weight:700;line-height:1;}
+details[open] summary::after{content:"−";}
+details p{margin:0 0 16px;font-size:14.5px;color:var(--ink-soft);}
+
+/* cta band */
+.band{
+  background:linear-gradient(135deg,#1a1f3d,#333a72);
+  color:#fff;border-radius:24px;padding:44px;text-align:center;
+  box-shadow:0 24px 50px rgba(26,31,61,.25);
+}
+.band h2{color:#fff;margin:0 0 12px;}
+.band p{color:#c3c8e8;max-width:40em;margin:0 auto 26px;font-size:15px;}
+.band .btn-primary{box-shadow:0 10px 26px rgba(255,122,61,.4);}
+.band .btn[aria-disabled="true"]{opacity:.55;pointer-events:none;}
+
+/* footer */
+footer.site{background:#141830;color:#a9b0d8;padding:44px 0 28px;margin-top:20px;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:30px;}
+footer .logo{color:#fff;margin-bottom:12px;}
+footer .logo .mark{background:#ffb648;}
+.foot-about{font-size:13.5px;line-height:1.8;max-width:32em;color:#8f97c0;}
+.foot-col h4{color:#fff;font-size:14px;margin:0 0 12px;font-weight:800;}
+.foot-col a{display:block;font-size:13.5px;padding:4px 0;color:#a9b0d8;transition:.2s;}
+.foot-col a:hover{color:#ffb648;}
+.foot-bottom{
+  border-top:1px solid rgba(255,255,255,.1);padding-top:20px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#7d85ae;
+}
+
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:32px;}
+  .cards{grid-template-columns:1fr 1fr;}
+  .show-grid{grid-template-columns:repeat(3,1fr);}
+  .split{grid-template-columns:1fr;gap:26px;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:720px){
+  nav.main{
+    display:none;position:absolute;top:100%;left:0;right:0;background:#fff;
+    flex-direction:column;padding:10px 4vw 16px;border-bottom:1px solid var(--line);
+    box-shadow:0 14px 24px rgba(26,31,61,.08);
+  }
+  nav.main.open{display:flex;}
+  nav.main a{padding:11px 12px;}
+  .nav-cta{display:none;}
+  .menu-btn{display:block;}
+  .hero{padding:36px 0 32px;}
+  .cards{grid-template-columns:1fr;}
+  .show-grid{grid-template-columns:1fr 1fr;gap:14px;}
+  section{padding:40px 0;}
+  .band{padding:32px 22px;}
+  .foot-grid{grid-template-columns:1fr;}
+  .hero-facts{gap:18px;}
+  .fact b{font-size:19px;}
+}
+</style>
+    <script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top" aria-label="豚豚剧网页版 首页">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1.5" y="3.5" width="21" height="15" rx="4" stroke="#ffb648" stroke-width="1.8"/>
+          <path d="M10 8l5.5 3.5L10 15V8z" fill="#ffb648"/>
+          <path d="M5 21h14" stroke="#ffb648" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      豚豚剧网页版
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="展开导航" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main" id="mainNav">
+      <a href="#features">功能概览</a>
+      <a href="#browse">剧集浏览</a>
+      <a href="#guide">观看指引</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <a class="nav-cta" href="#browse">开始追剧</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">短剧在线追剧 · 浏览器直达</span>
+        <h1>豚豚剧网页版</h1>
+        <p class="lede">豚豚剧网页版是面向短剧爱好者的在线追剧入口。无需安装客户端，在浏览器中即可按分类浏览剧集、搜索感兴趣的题材、查看剧集简介与更新提示，把零散时间用在想看的故事上。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#browse">
+            立即浏览剧集
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#guide">了解观看方式</a>
+        </div>
+        <div class="hero-facts">
+          <div class="fact"><b>4</b><span>题材分类浏览</span></div>
+          <div class="fact"><b>8</b><span>首页推荐剧集</span></div>
+          <div class="fact"><b>0</b><span>安装成本</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-title">今日热播 · 网页版速览</div>
+        <div class="art-list">
+          <div class="art-item">
+            <div class="art-thumb">剧</div>
+            <div><h4>都市逆袭短剧</h4><p>现代都市 · 更新中</p></div>
+          </div>
+          <div class="art-item">
+            <div class="art-thumb">剧</div>
+            <div><h4>古装权谋短剧</h4><p>古装传奇 · 已完结</p></div>
+          </div>
+          <div class="art-item">
+            <div class="art-thumb">剧</div>
+            <div><h4>甜宠轻喜短剧</h4><p>甜宠爱恋 · 更新中</p></div>
+          </div>
+          <div class="art-item">
+            <div class="art-thumb">剧</div>
+            <div><h4>悬疑推理短剧</h4><p>悬疑烧脑 · 已完结</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-tag">Features</div>
+        <h2>豚豚剧网页版能做什么</h2>
+        <p>围绕“找剧—看剧—追更”这条主线，豚豚剧网页版把浏览、筛选与剧集信息集中在一个页面里，减少在多个入口之间来回切换。</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4.5" width="19" height="13" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M9 9l4.5 2.8L9 14.6V9z" fill="currentColor"/><path d="M6 21h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>网页直接播放</h3>
+          <p>豚豚剧网页版以浏览器为载体，打开页面即可进入剧集观看流程，省去下载与安装的步骤，适合在电脑和手机上临时追剧。</p>
+        </article>
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>题材分类清晰</h3>
+          <p>按都市、古装、甜宠、悬疑等题材归集剧集，豚豚剧网页版的分类标签帮助你在不同情绪下快速锁定想看的类型。</p>
+        </article>
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>搜索与筛选</h3>
+          <p>输入剧名关键词或点击题材标签，即可在豚豚剧网页版内缩小范围，列表会随筛选条件实时变化，避免在长列表中翻找。</p>
+        </article>
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>热门推荐位</h3>
+          <p>首页推荐位汇总近期讨论度较高的短剧，并标注更新状态与题材，让第一次访问豚豚剧网页版的用户也有明确起点。</p>
+        </article>
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 9h6M7 13h10M7 17h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+          <h3>剧集简介与状态</h3>
+          <p>每部剧集卡片提供题材、更新状态等基础信息，豚豚剧网页版用简短文字说明内容方向，方便在点开前做出判断。</p>
+        </article>
+        <article class="card">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.6-7-10a7 7 0 1114 0c0 5.4-7 10-7 10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.6" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <h3>跨设备访问</h3>
+          <p>同一网址在桌面与移动端均可打开，豚豚剧网页版的页面布局会随屏幕宽度调整，手机端优先呈现剧名与入口。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROWSE -->
+  <section class="browse" id="browse">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-tag">Browse</div>
+        <h2>按题材浏览剧集</h2>
+        <p>以下为豚豚剧网页版首页推荐的剧集示例，可按题材筛选或搜索剧名。列表内容用于说明页面结构，实际片库以站点上线后提供的剧集为准。</p>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="searchInput" type="search" placeholder="搜索剧名或题材，如：都市、悬疑" aria-label="搜索剧集">
+        </label>
+        <div class="chips" id="chips" role="group" aria-label="题材筛选">
+          <button class="chip active" data-cat="全部">全部</button>
+          <button class="chip" data-cat="都市">都市</button>
+          <button class="chip" data-cat="古装">古装</button>
+          <button class="chip" data-cat="甜宠">甜宠</button>
+          <button class="chip" data-cat="悬疑">悬疑</button>
+        </div>
+      </div>
+
+      <div class="show-grid" id="showGrid">
+        <article class="show" data-cat="都市" data-name="重返二十岁的夏天">
+          <div class="poster p1"><span class="badge">更新中</span>都</div>
+          <div class="show-body"><h3>重返二十岁的夏天</h3><p>都市 · 逆袭成长</p><div class="meta">更新至 12 集</div></div>
+        </article>
+        <article class="show" data-cat="古装" data-name="长安旧梦录">
+          <div class="poster p2"><span class="badge">已完结</span>古</div>
+          <div class="show-body"><h3>长安旧梦录</h3><p>古装 · 权谋传奇</p><div class="meta">全 24 集</div></div>
+        </article>
+        <article class="show" data-cat="甜宠" data-name="今天的糖分超标">
+          <div class="poster p3"><span class="badge">更新中</span>甜</div>
+          <div class="show-body"><h3>今天的糖分超标</h3><p>甜宠 · 轻喜剧</p><div class="meta">更新至 8 集</div></div>
+        </article>
+        <article class="show" data-cat="悬疑" data-name="第七个目击者">
+          <div class="poster p4"><span class="badge">已完结</span>悬</div>
+          <div class="show-body"><h3>第七个目击者</h3><p>悬疑 · 推理烧脑</p><div class="meta">全 16 集</div></div>
+        </article>
+        <article class="show" data-cat="都市" data-name="加班到凌晨三点">
+          <div class="poster p5"><span class="badge">更新中</span>都</div>
+          <div class="show-body"><h3>加班到凌晨三点</h3><p>都市 · 职场情感</p><div class="meta">更新至 6 集</div></div>
+        </article>
+        <article class="show" data-cat="古装" data-name="山河故人令">
+          <div class="poster p6"><span class="badge">更新中</span>古</div>
+          <div class="show-body"><h3>山河故人令</h3><p>古装 · 家国群像</p><div class="meta">更新至 15 集</div></div>
+        </article>
+        <article class="show" data-cat="甜宠" data-name="邻居家的备忘录">
+          <div class="poster p7"><span class="badge">已完结</span>甜</div>
+          <div class="show-body"><h3>邻居家的备忘录</h3><p>甜宠 · 日常治愈</p><div class="meta">全 20 集</div></div>
+        </article>
+        <article class="show" data-cat="悬疑" data-name="雨夜来电">
+          <div class="poster p8"><span class="badge">更新中</span>悬</div>
+          <div class="show-body"><h3>雨夜来电</h3><p>悬疑 · 都市谜案</p><div class="meta">更新至 10 集</div></div>
+        </article>
+      </div>
+      <p class="empty" id="emptyTip" hidden>没有匹配的剧集，换个题材或关键词试试。</p>
+    </div>
+  </section>
+
+  <!-- GUIDE -->
+  <section id="guide">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-tag">Guide</div>
+        <h2>豚豚剧网页版的观看指引</h2>
+        <p>第一次使用网页版追剧，按下面三步走即可完成从找剧到观看的完整流程。</p>
+      </div>
+      <div class="split">
+        <ol class="steps">
+          <li>
+            <div class="num">1</div>
+            <div><h3>确定题材或剧名</h3><p>从都市、古装、甜宠、悬疑中选一个方向，或直接在搜索框输入记得的剧名片段，缩小候选范围。</p></div>
+          </li>
+          <li>
+            <div class="num">2</div>
+            <div><h3>查看剧集信息</h3><p>在卡片上确认题材标签与更新状态，判断是已完结可以一次看完，还是更新中适合边追边等。</p></div>
+          </li>
+          <li>
+            <div class="num">3</div>
+            <div><h3>进入观看并记录进度</h3><p>选择剧集进入播放页，短剧单集时长短，建议按顺序观看，避免跳集影响剧情理解。</p></div>
+          </li>
+        </ol>
+        <div class="prose">
+          <p>豚豚剧网页版面向的是碎片化时间场景。短剧通常以较短的单元推进剧情，单集结尾常留下悬念，因此连续观看的体验比单集跳看更重要。使用网页版时，建议先明确当天想看的方向，再进入对应分类，能显著减少挑选时间。</p>
+          <p><strong>关于更新状态：</strong>标注“更新中”的剧集表示后续仍有新内容上线，标注“已完结”的剧集则可按顺序连续观看。首页推荐位与分类列表中的状态标注，是判断追更节奏的主要依据。</p>
+          <p><strong>关于设备选择：</strong>桌面端适合一次浏览较多剧集卡片、对比题材；移动端适合通勤或休息时快速打开观看。豚豚剧网页版在窄屏下会调整为双列卡片，保持剧名与入口在首屏可见。</p>
+          <div class="note">
+            <h3>小提示</h3>
+            <p>剧集库存与更新节奏会随时间变化，页面上展示的分类与推荐仅作浏览引导。遇到无法播放的情况，可先刷新页面或更换浏览器再试。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-tag">FAQ</div>
+        <h2>关于豚豚剧网页版的常见问题</h2>
+        <p>把新访客最常问的几点集中说明，减少重复摸索。</p>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>豚豚剧网页版需要下载安装吗？</summary>
+          <p>不需要。豚豚剧网页版以网页形式提供，通过浏览器打开网址即可访问，适合不想在设备上额外安装应用的用户。若后续提供客户端，页面会另行说明。</p>
+        </details>
+        <details>
+          <summary>手机上能正常使用豚豚剧网页版吗？</summary>
+          <p>可以。页面会随屏幕宽度调整布局，手机端导航收进菜单按钮，剧集卡片改为双列排列，剧名与分类入口优先显示在首屏，便于单手操作。</p>
+        </details>
+        <details>
+          <summary>如何快速找到想看的短剧？</summary>
+          <p>有两种方式：一是点击题材标签，从都市、古装、甜宠、悬疑中筛选；二是在搜索框输入剧名片段。两者可同时使用，先选题材再搜索，结果更精准。</p>
+        </details>
+        <details>
+          <summary>剧集更新状态怎么看？</summary>
+          <p>每张剧集卡片上都有状态标记，“更新中”表示仍有新内容上线，“已完结”表示全部内容已可观看。更新集数会在卡片底部标注，方便判断是否值得现在开始追。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="wrap">
+      <div class="band">
+        <h2>现在打开豚豚剧网页版</h2>
+        <p>从题材分类开始，挑一部感兴趣的短剧，在浏览器里直接进入观看流程。下载入口将在客户端上线后开放。</p>
+        <div class="hero-actions" style="justify-content:center;margin-bottom:0;">
+          <a class="btn btn-primary" href="#browse">浏览全部剧集</a>
+          <a class="btn btn-ghost" href="#" data-download-placeholder="true" aria-disabled="true" tabindex="-1" style="pointer-events:none;">下载</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top">
+          <span class="mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.5" y="3.5" width="21" height="15" rx="4" stroke="#1a1f3d" stroke-width="1.8"/>
+              <path d="M10 8l5.5 3.5L10 15V8z" fill="#1a1f3d"/>
+            </svg>
+          </span>
+          豚豚剧网页版
+        </a>
+        <p class="foot-about">豚豚剧网页版是短剧在线观看与剧集导航的网页入口，提供题材分类、剧集搜索与更新状态提示，帮助你在浏览器中高效找到想看的短剧。</p>
+      </div>
+      <div class="foot-col">
+        <h4>站内导航</h4>
+        <a href="#features">功能概览</a>
+        <a href="#browse">剧集浏览</a>
+        <a href="#guide">观看指引</a>
+        <a href="#faq">常见问题</a>
+      </div>
+      <div class="foot-col">
+        <h4>追剧提示</h4>
+        <a href="#browse">按题材筛选</a>
+        <a href="#guide">更新状态说明</a>
+        <a href="#guide">移动端阅读</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025 豚豚剧网页版 · 短剧在线追剧入口</span>
+      <span>页面信息以站点实际上线内容为准</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var menuBtn=document.getElementById('menuBtn');
+  var nav=document.getElementById('mainNav');
+  if(menuBtn&&nav){
+    menuBtn.addEventListener('click',function(){
+      var open=nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded',open?'true':'false');
+    });
+    nav.addEventListener('click',function(e){
+      if(e.target.tagName==='A'){nav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');}
+    });
+  }
+
+  var input=document.getElementById('searchInput');
+  var chips=document.querySelectorAll('#chips .chip');
+  var items=Array.prototype.slice.call(document.querySelectorAll('#showGrid .show'));
+  var tip=document.getElementById('emptyTip');
+  var activeCat='全部';
+
+  function apply(){
+    var q=(input?input.value:'').trim().toLowerCase();
+    var shown=0;
+    items.forEach(function(el){
+      var cat=el.getAttribute('data-cat')||'';
+      var name=el.getAttribute('data-name')||'';
+      var text=el.textContent.toLowerCase();
+      var okCat=(activeCat==='全部'||cat===activeCat);
+      var okText=(q===''||name.toLowerCase().indexOf(q)>-1||text.indexOf(q)>-1);
+      var show=okCat&&okText;
+      el.style.display=show?'':'none';
+      if(show)shown++;
+    });
+    if(tip)tip.hidden=shown>0;
+  }
+
+  chips.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      chips.forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      activeCat=btn.getAttribute('data-cat')||'全部';
+      apply();
+    });
+  });
+
+  if(input){input.addEventListener('input',apply);}
+})();
+</script>
+</body>
+                                   </html>
